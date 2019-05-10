@@ -88,19 +88,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </router-link>
               </li>
           <li class="nav-item has-treeview">
-            <a href="#" class="nav-link active">
+            <a href="#" class="nav-link ">
                 <i class="fas fa-cogs"></i>
               <p>
                 Management
-                <i class="right fa fa-angle-left"></i>
+                <i class="right fa fa-angle-down living_coral"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="#" class="nav-link active">
-                    <i class="fas fa-circle-notch"></i>
-                  <p>Active Page</p>
-                </a>
+                <router-link to="/users" class="nav-link ">
+                    <i class="fas fa-users"></i>
+                  <p>Users</p>
+                </router-link>
               </li>
               <li class="nav-item">
                 <a href="#" class="nav-link">
@@ -122,10 +122,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <a href="{{ route('logout') }}"
             onclick="event.preventDefault();
                           document.getElementById('logout-form').submit();" 
-                          {{ __('Logout') }} class="nav-link" >
+                           class="nav-link" >
                 <i class="fas fa-sign-out-alt"></i>
               <p>
-                Logout
+                    {{ __('Logout') }}
               </p>
             </a>
           </li>

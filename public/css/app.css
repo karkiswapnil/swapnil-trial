@@ -13143,6 +13143,14 @@ a.text-muted:hover {
   box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
 }@charset "UTF-8";
 
+.cyan {
+  color: #6cb2eb;
+}
+
+.living_coral {
+  color: #FF6F61;
+}
+
 /*!
  * Bootstrap v4.3.1 (https://getbootstrap.com/)
  * Copyright 2011-2019 The Bootstrap Authors
@@ -29561,5 +29569,10 @@ readers do not read off random characters that represent icons */
 
 .fab {
   font-family: "Font Awesome 5 Brands";
+}
+
+.router-link-exact-active {
+  background-color: #FF6F61;
+  color: #FFFFFF !important;
 }
 

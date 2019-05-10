@@ -18,3 +18,9 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+/*
+|keep at last of all routes
+|404 error when refresh on vue routes 
+*/
+Route::get('{path}', 'HomeController@index')->where('path','([A-z\d-/_.]+)?');
