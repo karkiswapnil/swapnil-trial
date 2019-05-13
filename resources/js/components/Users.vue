@@ -158,6 +158,7 @@ export default {
       this.form.post("api/user").then(({ data }) => {
         console.log(data);
       });
+        $('#addNew').modal('hide')
             this.$Progress.finish()
     }
   },

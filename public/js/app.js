@@ -2044,6 +2044,7 @@ __webpack_require__.r(__webpack_exports__);
         var data = _ref2.data;
         console.log(data);
       });
+      $('#addNew').modal('hide');
       this.$Progress.finish();
     }
   },
