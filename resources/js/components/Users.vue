@@ -161,8 +161,9 @@ export default {
       this.form.post("api/user").then(({ data }) => {
         console.log(data);
       });
-      Fire.$emit('AfterCreate');
-      Swal.fire({
+      then(()=>{
+        Fire.$emit('AfterCreate');
+        Swal.fire({
         type: "success",
         toast: true,
         position: "top-end",
@@ -172,6 +173,9 @@ export default {
       });
       $("#addNew").modal("hide");
       this.$Progress.finish();
+      })
+      .catch(()=>{})
+     
     }
   },
   created() {
