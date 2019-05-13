@@ -145,6 +145,7 @@ export default {
       editmode : false,
       users: {},
       form: new Form({
+        id:'',
         name: "",
         email: "",
         password: "",
@@ -168,7 +169,25 @@ export default {
       axios.get("api/user").then(({ data }) => (this.users = data.data));
     },
     updateUser(){ 
-      console.log('editing data')
+     // console.log('editing data')
+     this.$Progress.start();
+     this.form.put('api/user/'+this.form.id)
+     .then(()=>{
+        Fire.$emit("AfterChange");
+        Swal.fire({
+          type: "success",
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          title: "User Updated successfully"
+        });
+        $("#addNew").modal("hide");
+     })
+     .catch(()=>{
+       this.$Progress.fail();
+
+     })
 
     },
     deleteUser(id) {
@@ -186,7 +205,7 @@ export default {
         this.form
           .delete("api/user/" + id)
           .then(() => {
-              Swal.fire("Deleted!", "Your file has been deleted.", "success");
+              Swal.fire("Deleted!", "User has been deleted.", "success");
               Fire.$emit("AfterChange");
           })
           .catch(() => {

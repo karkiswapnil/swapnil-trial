@@ -2027,6 +2027,7 @@ __webpack_require__.r(__webpack_exports__);
       editmode: false,
       users: {},
       form: new Form({
+        id: '',
         name: "",
         email: "",
         password: "",
@@ -2055,10 +2056,27 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     updateUser: function updateUser() {
-      console.log('editing data');
+      var _this2 = this;
+
+      // console.log('editing data')
+      this.$Progress.start();
+      this.form.put('api/user/' + this.form.id).then(function () {
+        Fire.$emit("AfterChange");
+        Swal.fire({
+          type: "success",
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          title: "User Updated successfully"
+        });
+        $("#addNew").modal("hide");
+      })["catch"](function () {
+        _this2.$Progress.fail();
+      });
     },
     deleteUser: function deleteUser(id) {
-      var _this2 = this;
+      var _this3 = this;
 
       Swal.fire({
         title: "Are you sure?",
@@ -2071,8 +2089,8 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (result) {
         //send request to server
         if (result.value) {
-          _this2.form["delete"]("api/user/" + id).then(function () {
-            Swal.fire("Deleted!", "Your file has been deleted.", "success");
+          _this3.form["delete"]("api/user/" + id).then(function () {
+            Swal.fire("Deleted!", "User has been deleted.", "success");
             Fire.$emit("AfterChange");
           })["catch"](function () {
             Swal.fire({
@@ -2084,7 +2102,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     createUser: function createUser() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.$Progress.start(); // Submit the form via a POST request
 
@@ -2104,16 +2122,16 @@ __webpack_require__.r(__webpack_exports__);
         });
         $("#addNew").modal("hide");
 
-        _this3.$Progress.finish();
+        _this4.$Progress.finish();
       })["catch"](function () {});
     }
   },
   created: function created() {
-    var _this4 = this;
+    var _this5 = this;
 
     this.loadUsers();
     Fire.$on("AfterChange", function () {
-      _this4.loadUsers();
+      _this5.loadUsers();
     }); //setInterval(()=>this.loadUsers(),3000);
   }
 });
