@@ -161,6 +161,7 @@ export default {
       this.form.post("api/user").then(({ data }) => {
         console.log(data);
       });
+      Fire.$emit('AfterCreate');
       Swal.fire({
         type: "success",
         toast: true,
@@ -175,7 +176,9 @@ export default {
   },
   created() {
     this.loadUsers();
-    setInterval(()=>this.loadUsers(),3000);
+    Fire.$on('AfterCreate',()=>{
+      this.loadUsers();});
+    //setInterval(()=>this.loadUsers(),3000);
   }
 };
 </script>
