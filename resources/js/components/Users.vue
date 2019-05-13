@@ -86,7 +86,7 @@
                 <label>Email</label>
                 <input
                   v-model="form.email"
-                  type="text"
+                  type="email"
                   name="email"
                   class="form-control"
                   :class="{ 'is-invalid': form.errors.has('email') }"
@@ -237,6 +237,7 @@ export default {
         this.$Progress.finish();
       })
       .catch(() => {
+        this.$Progress.fail();
          Swal.fire({
               type: "error",
               title: "Oops...",

@@ -75,7 +75,7 @@
                     <label for="inputName" class="col-sm-2 control-label">Name</label>
 
                     <div class="col-sm-10">
-                      <input type="email" v-model="form.name" class="form-control" id="inputName" placeholder="Name">
+                      <input type="text" v-model="form.name" class="form-control" id="inputName" placeholder="Name">
                     </div>
                   </div>
                   <div class="form-group">
@@ -98,6 +98,7 @@
                     <div class="col-sm-10">
                       <input
                         type="password"
+                        v-model="form.password"
                         class="form-control"
                         id="password"
                         placeholder="Password"
