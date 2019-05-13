@@ -146,10 +146,11 @@ export default {
       users: {},
       form: new Form({
         id:'',
-        name: "",
-        email: "",
-        password: "",
-        role: ""
+        name: '',
+        email: '',
+        password: '',
+        role: '',
+        photo:''
       })
     };
   },
@@ -209,6 +210,7 @@ export default {
               Fire.$emit("AfterChange");
           })
           .catch(() => {
+            this.$Progress.fail();
             Swal.fire({
               type: "error",
               title: "Oops...",
