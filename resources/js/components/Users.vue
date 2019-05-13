@@ -108,18 +108,20 @@
               </div>
 
               <div class="form-group">
-                <label >Role</label>
-                <select class="form-control" 
+                <label>Role</label>
+                <select
+                  class="form-control"
                   v-model="form.role"
                   type="text"
                   name="role"
                   id="role"
-                  :class="{ 'is-invalid': form.errors.has('role') }">
+                  :class="{ 'is-invalid': form.errors.has('role') }"
+                >
                   <option>Select Role</option>
                   <option value="admin">admin</option>
                   <option value="user">user</option>
                   <option value="member">member</option>
-                   <has-error :form="form" field="role"></has-error>
+                  <has-error :form="form" field="role"></has-error>
                 </select>
               </div>
             </div>
@@ -153,13 +155,21 @@ export default {
       axios.get("api/user").then(({ data }) => (this.users = data.data));
     },
     createUser() {
-          this.$Progress.start()
+      this.$Progress.start();
       // Submit the form via a POST request
       this.form.post("api/user").then(({ data }) => {
         console.log(data);
       });
-        $('#addNew').modal('hide')
-            this.$Progress.finish()
+      Swal.fire({
+        type: "success",
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        title: "User Created successfully"
+      });
+      $("#addNew").modal("hide");
+      this.$Progress.finish();
     }
   },
   created() {

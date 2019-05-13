@@ -22,6 +22,9 @@ Vue.use(VueRouter)
 import VueProgressBar from 'vue-progressbar'
 Vue.use(VueProgressBar, options)
 
+import Swal from 'sweetalert2'
+window.Swal=Swal;
+
 const options = {
   color: '#bffaf3',
   failedColor: '#874b4b',
