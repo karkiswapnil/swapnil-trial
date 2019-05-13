@@ -138,6 +138,7 @@
 </template>
 
 <script>
+import { setInterval } from 'timers';
 export default {
   data() {
     return {
@@ -174,6 +175,7 @@ export default {
   },
   created() {
     this.loadUsers();
+    setInterval(()=>this.loadUsers(),3000);
   }
 };
 </script>
