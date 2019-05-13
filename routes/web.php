@@ -19,6 +19,9 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+//Member controller routes
+Route::resource('/members', 'MembersController');
+
 /*
 |keep at last of all routes
 |404 error when refresh on vue routes 
