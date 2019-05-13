@@ -2042,8 +2042,34 @@ __webpack_require__.r(__webpack_exports__);
         return _this.users = data.data;
       });
     },
-    createUser: function createUser() {
+    deleteUser: function deleteUser(id) {
       var _this2 = this;
+
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+      }).then(function (result) {
+        //send request to server
+        if (result.value) {
+          _this2.form["delete"]("api/user/" + id).then(function () {
+            Swal.fire("Deleted!", "Your file has been deleted.", "success");
+            Fire.$emit("AfterChange");
+          })["catch"](function () {
+            Swal.fire({
+              type: "error",
+              title: "Oops..."
+            });
+          });
+        }
+      });
+    },
+    createUser: function createUser() {
+      var _this3 = this;
 
       this.$Progress.start(); // Submit the form via a POST request
 
@@ -2052,7 +2078,7 @@ __webpack_require__.r(__webpack_exports__);
         console.log(data);
       });
       then(function () {
-        Fire.$emit('AfterCreate');
+        Fire.$emit("AfterChange");
         Swal.fire({
           type: "success",
           toast: true,
@@ -2063,16 +2089,16 @@ __webpack_require__.r(__webpack_exports__);
         });
         $("#addNew").modal("hide");
 
-        _this2.$Progress.finish();
+        _this3.$Progress.finish();
       })["catch"](function () {});
     }
   },
   created: function created() {
-    var _this3 = this;
+    var _this4 = this;
 
     this.loadUsers();
-    Fire.$on('AfterCreate', function () {
-      _this3.loadUsers();
+    Fire.$on("AfterChange", function () {
+      _this4.loadUsers();
     }); //setInterval(()=>this.loadUsers(),3000);
   }
 });
@@ -58915,7 +58941,22 @@ var render = function() {
                         _vm._v(_vm._s(_vm._f("myDate")(user.created_at)))
                       ]),
                       _vm._v(" "),
-                      _vm._m(2, true)
+                      _c("td", [
+                        _vm._m(2, true),
+                        _vm._v("\n                  /\n                  "),
+                        _c(
+                          "a",
+                          {
+                            attrs: { href: "#" },
+                            on: {
+                              click: function($event) {
+                                return _vm.deleteUser(user.id)
+                              }
+                            }
+                          },
+                          [_c("i", { staticClass: "fa fa-trash" })]
+                        )
+                      ])
                     ])
                   })
                 ],
@@ -59196,14 +59237,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("td", [
-      _c("a", { attrs: { href: "#" } }, [
-        _c("i", { staticClass: "fa fa-edit" })
-      ]),
-      _vm._v("\n                  /\n                  "),
-      _c("a", { attrs: { href: "#" } }, [
-        _c("i", { staticClass: "fa fa-trash" })
-      ])
+    return _c("a", { attrs: { href: "#" } }, [
+      _c("i", { staticClass: "fa fa-edit" })
     ])
   },
   function() {

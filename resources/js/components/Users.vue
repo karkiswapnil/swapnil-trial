@@ -41,7 +41,7 @@
                       <i class="fa fa-edit"></i>
                     </a>
                     /
-                    <a href="#">
+                    <a href="#" @click="deleteUser(user.id)">
                       <i class="fa fa-trash"></i>
                     </a>
                   </td>
@@ -138,7 +138,7 @@
 </template>
 
 <script>
-import { setInterval } from 'timers';
+import { setInterval } from "timers";
 export default {
   data() {
     return {
@@ -155,33 +155,59 @@ export default {
     loadUsers() {
       axios.get("api/user").then(({ data }) => (this.users = data.data));
     },
+    deleteUser(id) {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+      }).then(result => {
+        //send request to server
+        if(result.value){
+        this.form
+          .delete("api/user/" + id)
+          .then(() => {
+              Swal.fire("Deleted!", "Your file has been deleted.", "success");
+              Fire.$emit("AfterChange");
+          })
+          .catch(() => {
+            Swal.fire({
+              type: "error",
+              title: "Oops...",
+            });
+          });
+        }
+      });
+    },
     createUser() {
       this.$Progress.start();
       // Submit the form via a POST request
       this.form.post("api/user").then(({ data }) => {
         console.log(data);
       });
-      then(()=>{
-        Fire.$emit('AfterCreate');
+      then(() => {
+        Fire.$emit("AfterChange");
         Swal.fire({
-        type: "success",
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        title: "User Created successfully"
-      });
-      $("#addNew").modal("hide");
-      this.$Progress.finish();
-      })
-      .catch(()=>{})
-     
+          type: "success",
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          title: "User Created successfully"
+        });
+        $("#addNew").modal("hide");
+        this.$Progress.finish();
+      }).catch(() => {});
     }
   },
   created() {
     this.loadUsers();
-    Fire.$on('AfterCreate',()=>{
-      this.loadUsers();});
+    Fire.$on("AfterChange", () => {
+      this.loadUsers();
+    });
     //setInterval(()=>this.loadUsers(),3000);
   }
 };
