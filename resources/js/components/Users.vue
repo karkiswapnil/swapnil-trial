@@ -220,10 +220,8 @@ export default {
     createUser() {
       this.$Progress.start();
       // Submit the form via a POST request
-      this.form.post("api/user").then(({ data }) => {
-        console.log(data);
-      });
-      then(() => {
+      this.form.post("api/user")
+      .then(() => {
         Fire.$emit("AfterChange");
         Swal.fire({
           type: "success",
@@ -235,7 +233,13 @@ export default {
         });
         $("#addNew").modal("hide");
         this.$Progress.finish();
-      }).catch(() => {});
+      })
+      .catch(() => {
+         Swal.fire({
+              type: "error",
+              title: "Oops...",
+            });
+      });
     }
   },
   created() {

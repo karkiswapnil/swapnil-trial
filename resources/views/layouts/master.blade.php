@@ -89,7 +89,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </li>
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link ">
-                <i class="fas fa-cogs"></i>
+                <i class="fas fa-cog"></i>
               <p>
                 Management
                 <i class="right fa fa-angle-down living_coral"></i>
@@ -115,6 +115,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <i class="fas fa-user"></i>
               <p>
                 Profile
+              </p>
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <router-link to="/developer" class="nav-link">
+              <i class="fas fa-cogs"></i>
+              <p>
+                Developer
               </p>
             </router-link>
           </li>
