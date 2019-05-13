@@ -10,8 +10,7 @@
               <button
                 type="button"
                 class="btn btn-success"
-                data-toggle="modal"
-                data-target="#addNew"
+                @click="newModal"
               >
                 Add new
                 <i class="fas fa-user-plus"></i>
@@ -37,7 +36,7 @@
                   <td>{{user.role | capitalize}}</td>
                   <td>{{user.created_at | myDate}}</td>
                   <td>
-                    <a href="#">
+                    <a href="#" @click="editModal(user)">
                       <i class="fa fa-edit"></i>
                     </a>
                     /
@@ -59,8 +58,7 @@
       tabindex="-1"
       role="dialog"
       aria-labelledby="addNewLabel"
-      aria-hidden="true"
-    >
+      aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -152,6 +150,15 @@ export default {
     };
   },
   methods: {
+    newModal(){
+      this.form.reset();
+       $("#addNew").modal("show");
+    },
+    editModal(user){
+      this.form.reset();
+       $("#addNew").modal("show");
+       this.form.fill(user);
+    },
     loadUsers() {
       axios.get("api/user").then(({ data }) => (this.users = data.data));
     },
