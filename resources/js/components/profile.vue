@@ -12,7 +12,7 @@
             <h5 class="widget-user-desc">Web Designer</h5>
           </div>
           <div class="widget-user-image">
-            <img class="img-circle" src="/img/profile.png" alt="User Avatar">
+            <img class="img-circle" :src="getProfilePhoto()" alt="User Avatar">
           </div>
           <div class="card-footer">
             <div class="row">
@@ -174,6 +174,11 @@ export default {
   },
 
   methods: {
+    getProfilePhoto(){
+      let photo = (this.form.photo.length>200) ? this.form.photo:"img/profile/"+this.form.photo;
+      return photo;
+      //return "img/profile/"+this.form.photo;
+    },
     updateInfo() {
       this.$Progress.start();
       console.log('uploading...');
