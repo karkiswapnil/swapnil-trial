@@ -13,4 +13,9 @@ export default class Gate{
     isMember(){
         return this.user.role ==='member';
     }
+    isAdminOrUser(){
+       if(this.user.role ==='user' || this.user.role ==='admin' ){
+           return true;
+       }
+    }
 }
