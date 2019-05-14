@@ -75,26 +75,46 @@
                     <label for="inputName" class="col-sm-2 control-label">Name</label>
 
                     <div class="col-sm-10">
-                      <input type="text" v-model="form.name" class="form-control" id="inputName" placeholder="Name">
+                      <input
+                        type="text"
+                        v-model="form.name"
+                        class="form-control"
+                        id="inputName"
+                        placeholder="Name"
+                      >
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="inputEmail" class="col-sm-2 control-label">Email</label>
 
                     <div class="col-sm-10">
-                      <input type="email" v-model="form.email" class="form-control" id="inputEmail" placeholder="Email">
+                      <input
+                        type="email"
+                        v-model="form.email"
+                        class="form-control"
+                        id="inputEmail"
+                        placeholder="Email"
+                      >
                     </div>
                   </div>
 
                   <div class="form-group">
                     <label for="uploadPhoto" class="col-sm-2 control-label">Upload Photo</label>
                     <div class="col-sm-10">
-                      <input type="file" class="form-control-file" id="uploadPhoto">
+                      <input
+                        type="file"
+                        @change="updateProfile"
+                        class="form-control-file"
+                        id="uploadPhoto"
+                      >
                     </div>
                   </div>
 
                   <div class="form-group">
-                    <label for="password" class="col-sm-2 control-label">Password</label>
+                    <label
+                      for="password"
+                      class="col-sm-2 control-label"
+                    >Password(leave empty if not changing)</label>
                     <div class="col-sm-10">
                       <input
                         type="password"
@@ -108,7 +128,11 @@
 
                   <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                      <button type="submit" class="btn btn-danger">Submit</button>
+                      <button
+                        type="submit"
+                        @click.prevent="updateInfo"
+                        class="btn btn-success"
+                      >Update</button>
                     </div>
                   </div>
                 </form>
@@ -128,21 +152,75 @@
 export default {
   data() {
     return {
-       form: new Form({
-        id:'',
-        name: '',
-        email: '',
-        password: '',
-        role: '',
-        photo:''
+      form: new Form({
+        id: "",
+        name: "",
+        email: "",
+        password: "",
+        role: "",
+        photo: ""
       })
     };
   },
+
   mounted() {
     console.log("Component mounted.");
   },
+
+  methods: {
+    updateInfo() {
+      this.$Progress.start();
+      // console.log('uploading...');
+      this.form
+        .put("api/profile")
+        .then(() => {
+          Fire.$emit("AfterChange");
+          Swal.fire({
+            type: "success",
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            title: "Profile Updated successfully"
+          });
+
+          this.$Progress.finish();
+        })
+        .catch(() => {
+          this.$Progress.fail();
+          Swal.fire({
+            type: "error",
+            title: "Oops...",
+            text: "Something went wrong"
+          });
+        });
+    },
+    updateProfile(e) {
+      //console.log('uploading...')
+      let file = e.target.files[0];
+      console.log(file);
+      let reader = new FileReader();
+      if (file["size"] <= 2097152) {
+        reader.onloadend = file => {
+          //console.log("RESULT", reader.result);
+          this.form.photo = reader.result;
+        };
+        reader.readAsDataURL(file);
+      } else {
+        Swal.fire({
+          type: "error",
+          title: "Oops...",
+          text: "You are uploading a large file"
+        });
+      }
+    }
+  },
+
   created() {
-    axios.get("api/profile").then(({ data }) => (this.form.fill(data)));
+    axios.get("api/profile").then(({ data }) => this.form.fill(data));
+    Fire.$on("AfterChange", () => {
+      this.created();
+    });
   }
 };
 </script>
