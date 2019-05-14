@@ -171,6 +171,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
 </div>
 <!-- ./wrapper -->
 
+<script>
+    @auth
+      window.user = @json(auth()->user())
+    @endauth
+</script>
+
 <!-- REQUIRED SCRIPTS -->
 <script src="/js/app.js"></script>
 
