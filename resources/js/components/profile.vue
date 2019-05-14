@@ -81,7 +81,9 @@
                         class="form-control"
                         id="inputName"
                         placeholder="Name"
+                        :class="{ 'is-invalid': form.errors.has('name') }"
                       >
+                      <has-error :form="form" field="name"></has-error>
                     </div>
                   </div>
                   <div class="form-group">
@@ -94,7 +96,9 @@
                         class="form-control"
                         id="inputEmail"
                         placeholder="Email"
+                        :class="{ 'is-invalid': form.errors.has('email') }"
                       >
+                      <has-error :form="form" field="email"></has-error>
                     </div>
                   </div>
 
@@ -122,7 +126,9 @@
                         class="form-control"
                         id="password"
                         placeholder="Password"
+                       :class="{ 'is-invalid': form.errors.has('password') }"
                       >
+                      <has-error :form="form" field="password"></has-error>
                     </div>
                   </div>
 
@@ -170,11 +176,10 @@ export default {
   methods: {
     updateInfo() {
       this.$Progress.start();
-      // console.log('uploading...');
+      console.log('uploading...');
       this.form
         .put("api/profile")
         .then(() => {
-          Fire.$emit("AfterChange");
           Swal.fire({
             type: "success",
             toast: true,
@@ -188,11 +193,7 @@ export default {
         })
         .catch(() => {
           this.$Progress.fail();
-          Swal.fire({
-            type: "error",
-            title: "Oops...",
-            text: "Something went wrong"
-          });
+          
         });
     },
     updateProfile(e) {
@@ -218,9 +219,6 @@ export default {
 
   created() {
     axios.get("api/profile").then(({ data }) => this.form.fill(data));
-    Fire.$on("AfterChange", () => {
-      this.created();
-    });
   }
 };
 </script>

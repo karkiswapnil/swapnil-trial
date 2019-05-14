@@ -238,10 +238,6 @@ export default {
       })
       .catch(() => {
         this.$Progress.fail();
-         Swal.fire({
-              type: "error",
-              title: "Oops...",
-            });
       });
     }
   },
