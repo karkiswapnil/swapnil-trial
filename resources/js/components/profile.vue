@@ -185,6 +185,7 @@ export default {
       this.form
         .put("api/profile")
         .then(() => {
+          Fire.$emit("AfterChange");
           Swal.fire({
             type: "success",
             toast: true,
@@ -224,6 +225,9 @@ export default {
 
   created() {
     axios.get("api/profile").then(({ data }) => this.form.fill(data));
+     Fire.$on("AfterChange", () => {
+      this.created();
+    });
   }
 };
 </script>

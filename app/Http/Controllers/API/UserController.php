@@ -36,6 +36,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('isAdmin');
         $this->validate($request,[
             'name'=>'required|string|max:191',
             'email'=>'required|string|max:191|email|unique:users',
@@ -114,6 +115,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->authorize('isAdmin');
         $user = User::findorFail($id);
 
         $this->validate($request,[
@@ -135,6 +137,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
+        $this->authorize('isAdmin');
         $user = User::findorFail($id);
 
         //delete user
