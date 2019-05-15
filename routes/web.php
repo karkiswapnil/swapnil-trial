@@ -26,6 +26,16 @@ Route::get('/home', 'HomeController@index')->name('home');
 //Member controller routes
 Route::resource('/members', 'MembersController');
 
+Route::get('download-csv', function () {
+
+	$users = \App\User::all();
+
+	$csvExporter = new \Laracsv\Export();
+
+	return $csvExporter->build($users, ['id', 'name', 'email','role','created_at'])->download(time().'-'.'users.csv');
+
+});
+
 /*
 |keep at last of all routes
 |404 error when refresh on vue routes 

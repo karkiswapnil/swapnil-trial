@@ -2291,6 +2291,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -2308,6 +2316,9 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    downloadCsv: function downloadCsv() {
+      window.location.href = "download-csv";
+    },
     // Our method to GET results from a Laravel endpoint
     getResults: function getResults() {
       var _this = this;
@@ -62803,6 +62814,19 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "card-tools" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-success",
+                      attrs: { type: "button" },
+                      on: { click: _vm.downloadCsv }
+                    },
+                    [
+                      _vm._v("\n              Download CSV\n              "),
+                      _c("i", { staticClass: "fas fa-file-csv" })
+                    ]
+                  ),
+                  _vm._v(" "),
                   _c(
                     "button",
                     {

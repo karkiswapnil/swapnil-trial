@@ -7,6 +7,14 @@
             <h3 class="card-title">Users Table</h3>
 
             <div class="card-tools">
+               <button
+                type="button"
+                class="btn btn-success"
+                @click="downloadCsv"
+              >
+                Download CSV
+                <i class="fas fa-file-csv"></i>
+              </button>
               <button
                 type="button"
                 class="btn btn-success"
@@ -162,6 +170,9 @@ export default {
     };
   },
   methods: {
+    downloadCsv(){
+      window.location.href = "download-csv";
+    },
    // Our method to GET results from a Laravel endpoint
 		getResults(page = 1) {
 			axios.get('api/user?page=' + page)
