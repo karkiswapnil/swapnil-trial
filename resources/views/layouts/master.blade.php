@@ -102,9 +102,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </router-link>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="fas fa-circle-notch"></i>
-                  <p>Inactive Page</p>
+                <a href="/userPosts" class="nav-link">
+                  <i class="fas fa-blog"></i>
+                  <p>User Posts</p>
                 </a>
               </li>
             </ul>
