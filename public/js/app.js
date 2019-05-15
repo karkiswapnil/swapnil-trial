@@ -2413,23 +2413,16 @@ __webpack_require__.r(__webpack_exports__);
     var _this6 = this;
 
     Fire.$on("searching", function () {
-      axios.get("api/user").then(function (_ref2) {
-        var data = _ref2.data;
-        return _this6.users = data;
-      });
-    });
-    this.loadUsers();
-    Fire.$on("AfterChange", function () {
-      _this6.loadUsers();
-    }); //setInterval(()=>this.loadUsers(),3000);
-
-    Fire.$on("searching", function () {
       var $query = _this6.$parent.search;
       console.log($query);
       axios.get("api/findUser?q=" + $query).then(function (data) {
         _this6.users = data.data;
       })["catch"]();
     });
+    this.loadUsers();
+    Fire.$on("AfterChange", function () {
+      _this6.loadUsers();
+    }); //setInterval(()=>this.loadUsers(),3000);
   }
 });
 
@@ -79312,9 +79305,12 @@ var app = new Vue({
     search: ''
   },
   methods: {
-    searchIt: function searchIt() {
+    searchIt: _.debounce(function () {
       Fire.$emit("searching");
       console.log('searching...');
+    }, 1000),
+    printMe: function printMe() {
+      window.print();
     }
   }
 });
