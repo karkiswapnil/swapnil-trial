@@ -29,7 +29,7 @@
                   <th>Registered At</th>
                   <th>Modify</th>
                 </tr>
-                <tr v-for="user in users" v-bind:key="user.id">
+                <tr v-for="user in users.data" v-bind:key="user.id">
                   <td>{{user.id}}</td>
                   <td>{{user.name}}</td>
                   <td>{{user.email}}</td>
@@ -49,6 +49,9 @@
             </table>
           </div>
           <!-- /.card-body -->
+          <div class="card-footer">
+            <pagination :data="users" @pagination-change-page="getResults"></pagination>
+          </div>
         </div>
       </div>
     </div>
@@ -159,6 +162,13 @@ export default {
     };
   },
   methods: {
+   // Our method to GET results from a Laravel endpoint
+		getResults(page = 1) {
+			axios.get('api/user?page=' + page)
+				.then(response => {
+					this.users = response.data;
+				});
+		},
     newModal(){
       this.editmode=false;
       this.form.reset();
@@ -172,7 +182,7 @@ export default {
     },
     loadUsers() {
       if(this.$gate.isAdminOrUser){
-      axios.get("api/user").then(({ data }) => (this.users = data.data));
+      axios.get("api/user").then(({ data }) => (this.users = data));
       }
     },
     updateUser(){ 
@@ -248,11 +258,21 @@ export default {
     }
   },
   created() {
+    Fire.$on("searching", () => {
+      let $query = this.$parent.search;
+      console.log($query);
+      axios.get("api/findUser?q="+$query)
+      .then((data)=>{
+        this.users = data.data;
+      })
+      .catch()
+    });
     this.loadUsers();
     Fire.$on("AfterChange", () => {
       this.loadUsers();
     });
     //setInterval(()=>this.loadUsers(),3000);
+    
   }
 };
 </script>

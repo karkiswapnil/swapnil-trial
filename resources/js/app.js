@@ -24,10 +24,6 @@ Vue.use(VueRouter)
 
 import VueProgressBar from 'vue-progressbar'
 Vue.use(VueProgressBar, options)
-
-import Swal from 'sweetalert2'
-window.Swal=Swal;
-
 const options = {
   color: '#bffaf3',
   failedColor: '#874b4b',
@@ -42,11 +38,22 @@ const options = {
   inverse: false
 }
 
+import Swal from 'sweetalert2'
+window.Swal=Swal;
+
+Vue.component('pagination', require('laravel-vue-pagination'));
+
+
+
 const routes = [
     { path: '/dashboard', component: require('./components/Dashboard.vue').default},
     { path: '/developer', component: require('./components/Developer.vue').default},
     { path: '/profile', component: require('./components/Profile.vue').default },
-    { path: '/users', component: require('./components/Users.vue').default }
+    { path: '/users', component: require('./components/Users.vue').default },
+    
+    //keep at last
+    //not found page for unknown routes
+    { path: '*', component: require('./components/NotFound.vue').default }
   ]
 
   const router = new VueRouter({
@@ -107,5 +114,14 @@ Vue.component(
 
 const app = new Vue({
     el: '#app',
-    router
+    router,
+    data:{
+      search: ''
+    },
+    methods:{
+      searchIt(){
+        Fire.$emit("searching");
+        console.log('searching...');
+      }
+    }
 });
