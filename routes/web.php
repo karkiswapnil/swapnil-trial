@@ -39,6 +39,9 @@ Route::get('download-csv', function () {
 Route::get('login/google', 'Auth\LoginController@redirectToProvider')->name('login.google');
 Route::get('login/google/callback', 'Auth\LoginController@handleProviderCallback');
 
+Route::get('/send', 'EmailController@send');
+Route::post('/notify', 'EmailController@notify');
+
 /*
 |keep at last of all routes
 |404 error when refresh on vue routes 
