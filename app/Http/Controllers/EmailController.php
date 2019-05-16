@@ -13,9 +13,9 @@ class EmailController extends Controller
     public function send(Request $request){
 
         $user = auth()->user();
-
-        $name = 'swapnil';
-        Mail::to('swapnilk21030@gmail.com')->send(new MailNotify($user));
+        $to=$request->input('to');
+        $subject = $request->input('subject');
+        Mail::to($to)->send(new MailNotify($subject));
         
         return 'Email was sent';
         

@@ -6,7 +6,7 @@
 <body>
 
  <h1>This is test mail from laravel test core-dreams</h1>
- <p>Thank you {{ $user->name }} </p>
+ <p>Thank you {{ $data }} </p>
 
 </body>
 </html> 

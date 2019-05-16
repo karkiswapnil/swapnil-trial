@@ -10,15 +10,15 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 class MailNotify extends Mailable
 {
     use Queueable, SerializesModels;
-    public $user;
+    public $data;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct($data)
     {
-        $this->user = $user;
+        $this->data = $data;
     }
 
     /**
