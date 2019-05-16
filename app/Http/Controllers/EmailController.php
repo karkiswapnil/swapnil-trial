@@ -6,16 +6,21 @@ use Illuminate\Http\Request;
 use Redirect,Response,DB,Config;
 use App\Mail\MailNotify;
 use App\User;
+use App\Email;
 use Mail;
 
 class EmailController extends Controller
 {
     public function send(Request $request){
 
-        $user = auth()->user();
         $to=$request->input('to');
-        $subject = $request->input('subject');
-        Mail::to($to)->send(new MailNotify($subject));
+
+        $data = new Email;
+        $data->subject = $request->input('subject');
+        $data->message = $request->input('message');
+
+
+        Mail::to($to)->send(new MailNotify($data));
         
         return 'Email was sent';
         
