@@ -51,6 +51,7 @@ const routes = [
     { path: '/profile', component: require('./components/Profile.vue').default },
     { path: '/users', component: require('./components/Users.vue').default },
     { path: '/userPosts', component: require('./components/UserPosts.vue').default },
+    { path: '/mailSubscribers', component: require('./components/MailSubscribers.vue').default },
     
     //keep at last
     //not found page for unknown routes
