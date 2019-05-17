@@ -7,15 +7,11 @@
             <h3 class="card-title">Mail Subscribers List</h3>
 
             <div class="card-tools">
-                <button
-                type="button"
-                class="btn btn-success"
-                @click="downloadCsv"
-              >
+              <button type="button" class="btn btn-success" @click="downloadCsv">
                 Download CSV
                 <i class="fas fa-file-csv"></i>
               </button>
-              <button type="button" class="btn btn-success">
+              <button type="button" @click="newModal" class="btn btn-success">
                 Add Subscriber
                 <i class="fas fa-user-plus"></i>
               </button>
@@ -38,7 +34,7 @@
                   <td>{{subscriber.email}}</td>
                   <td>{{subscriber.created_at | myDate}}</td>
                   <td>
-                    <a href="#">
+                    <a href="#" @click="editModal(subscriber)">
                       <i class="fa fa-edit"></i>
                     </a>
                     /
@@ -55,6 +51,71 @@
         </div>
       </div>
     </div>
+    <div
+      class="modal fade"
+      id="addNewSubscriber"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="addNewLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 v-show="!editmode" class="modal-title" id="addNewLabel">Add New Subscriber</h5>
+            <h5 v-show="editmode" class="modal-title" id="addNewLabel">Update Subscriber</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form @submit.prevent="editmode ? updateSubscriber() : createSubscriber()">
+            <div class="modal-body">
+              <div class="form-group">
+                <label>First Name</label>
+                <input
+                  v-model="form.first_name"
+                  type="text"
+                  name="first_name"
+                  class="form-control"
+                  :class="{ 'is-invalid': form.errors.has('first name') }"
+                >
+                <has-error :form="form" field="first name"></has-error>
+              </div>
+
+              <div class="form-group">
+                <label>Last Name</label>
+                <input
+                  v-model="form.last_name"
+                  type="text"
+                  name="last_name"
+                  class="form-control"
+                  :class="{ 'is-invalid': form.errors.has('last name') }"
+                >
+                <has-error :form="form" field="last name"></has-error>
+              </div>
+
+              <div class="form-group">
+                <label>Email</label>
+                <input
+                  v-model="form.email"
+                  type="email"
+                  name="email"
+                  class="form-control"
+                  :class="{ 'is-invalid': form.errors.has('email') }"
+                >
+                <has-error :form="form" field="email"></has-error>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+              <button v-show="editmode" type="submit" class="btn btn-primary">Update</button>
+              <button v-show="!editmode" type="submit" class="btn btn-primary">Create</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -62,6 +123,7 @@
 export default {
   data() {
     return {
+      editmode: false,
       subscriber: {},
       form: new Form({
         id: "",
@@ -72,16 +134,74 @@ export default {
     };
   },
   methods: {
-       downloadCsv(){
+    newModal() {
+      this.editmode = false;
+      this.form.reset();
+      $("#addNewSubscriber").modal("show");
+    },
+    editModal(user) {
+      this.editmode = true;
+      this.form.reset();
+      $("#addNewSubscriber").modal("show");
+      this.form.fill(user);
+    },
+    createSubscriber() {
+      this.$Progress.start();
+      // Submit the form via a POST request
+      this.form
+        .post("api/mailSubscribers")
+        .then(() => {
+            Fire.$emit("AfterChange");
+            Swal.fire({
+            type: "success",
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            title: "subscriber added successfully"
+          });
+          $("#addNewSubscriber").modal("hide");
+          this.$Progress.finish();
+        })
+        .catch(() => {
+          this.$Progress.fail();
+        });
+    },
+    updateSubscriber() {
+      // console.log('editing data')
+      this.$Progress.start();
+      this.form
+        .put("api/mailSubscribers/" + this.form.id)
+        .then(() => {
+          Fire.$emit("AfterChange");
+          Swal.fire({
+            type: "success",
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            title: "susbcriber Updated successfully"
+          });
+          $("#addNewSubscriber").modal("hide");
+        })
+        .catch(() => {
+          this.$Progress.fail();
+        });
+    },
+    downloadCsv() {
       window.location.href = "download-csv-subscribers";
     },
     loadUsers() {
-      axios.get("api/mailSubscribers").then(({ data }) => (this.subscriber = data));
+      axios
+        .get("api/mailSubscribers")
+        .then(({ data }) => (this.subscriber = data));
     }
   },
-  mounted() {
+  created() {
     this.loadUsers();
-    console.log("Component mounted.");
+    Fire.$on("AfterChange", () => {
+      this.loadUsers();
+    });
   }
 };
 </script>

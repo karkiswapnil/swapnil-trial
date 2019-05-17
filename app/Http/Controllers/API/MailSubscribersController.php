@@ -26,7 +26,17 @@ class MailSubscribersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,[
+            'first_name'=>'required|string|max:191',
+            'last_name'=>'required|string|max:191',
+            'email'=>'required|string|max:191|email|unique:mail_subscribers',
+          
+        ]);
+        return MailSubscribers:: create([
+            'first_name'=>$request['first_name'],
+            'last_name'=>$request['last_name'],
+            'email'=>$request['email']
+        ]);
     }
 
     /**

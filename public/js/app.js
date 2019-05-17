@@ -1929,9 +1929,71 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      editmode: false,
       subscriber: {},
       form: new Form({
         id: "",
@@ -1942,21 +2004,78 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    newModal: function newModal() {
+      this.editmode = false;
+      this.form.reset();
+      $("#addNewSubscriber").modal("show");
+    },
+    editModal: function editModal(user) {
+      this.editmode = true;
+      this.form.reset();
+      $("#addNewSubscriber").modal("show");
+      this.form.fill(user);
+    },
+    createSubscriber: function createSubscriber() {
+      var _this = this;
+
+      this.$Progress.start(); // Submit the form via a POST request
+
+      this.form.post("api/mailSubscribers").then(function () {
+        Fire.$emit("AfterChange");
+        Swal.fire({
+          type: "success",
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          title: "subscriber added successfully"
+        });
+        $("#addNewSubscriber").modal("hide");
+
+        _this.$Progress.finish();
+      })["catch"](function () {
+        _this.$Progress.fail();
+      });
+    },
+    updateSubscriber: function updateSubscriber() {
+      var _this2 = this;
+
+      // console.log('editing data')
+      this.$Progress.start();
+      this.form.put("api/mailSubscribers/" + this.form.id).then(function () {
+        Fire.$emit("AfterChange");
+        Swal.fire({
+          type: "success",
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          title: "susbcriber Updated successfully"
+        });
+        $("#addNewSubscriber").modal("hide");
+      })["catch"](function () {
+        _this2.$Progress.fail();
+      });
+    },
     downloadCsv: function downloadCsv() {
       window.location.href = "download-csv-subscribers";
     },
     loadUsers: function loadUsers() {
-      var _this = this;
+      var _this3 = this;
 
       axios.get("api/mailSubscribers").then(function (_ref) {
         var data = _ref.data;
-        return _this.subscriber = data;
+        return _this3.subscriber = data;
       });
     }
   },
-  mounted: function mounted() {
+  created: function created() {
+    var _this4 = this;
+
     this.loadUsers();
-    console.log("Component mounted.");
+    Fire.$on("AfterChange", function () {
+      _this4.loadUsers();
+    });
   }
 });
 
@@ -62335,7 +62454,18 @@ var render = function() {
                 ]
               ),
               _vm._v(" "),
-              _vm._m(0)
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-success",
+                  attrs: { type: "button" },
+                  on: { click: _vm.newModal }
+                },
+                [
+                  _vm._v("\n              Add Subscriber\n              "),
+                  _c("i", { staticClass: "fas fa-user-plus" })
+                ]
+              )
             ])
           ]),
           _vm._v(" "),
@@ -62344,7 +62474,7 @@ var render = function() {
               _c(
                 "tbody",
                 [
-                  _vm._m(1),
+                  _vm._m(0),
                   _vm._v(" "),
                   _vm._l(_vm.subscriber.data, function(subscriber) {
                     return _c("tr", { key: subscriber.id }, [
@@ -62364,7 +62494,22 @@ var render = function() {
                         _vm._v(_vm._s(_vm._f("myDate")(subscriber.created_at)))
                       ]),
                       _vm._v(" "),
-                      _vm._m(2, true)
+                      _c("td", [
+                        _c(
+                          "a",
+                          {
+                            attrs: { href: "#" },
+                            on: {
+                              click: function($event) {
+                                return _vm.editModal(subscriber)
+                              }
+                            }
+                          },
+                          [_c("i", { staticClass: "fa fa-edit" })]
+                        ),
+                        _vm._v("\n                  /\n                  "),
+                        _vm._m(1, true)
+                      ])
                     ])
                   })
                 ],
@@ -62376,23 +62521,256 @@ var render = function() {
           _c("div", { staticClass: "card-footer" })
         ])
       ])
-    ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "addNewSubscriber",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "addNewLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-dialog-centered",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header" }, [
+                _c(
+                  "h5",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: !_vm.editmode,
+                        expression: "!editmode"
+                      }
+                    ],
+                    staticClass: "modal-title",
+                    attrs: { id: "addNewLabel" }
+                  },
+                  [_vm._v("Add New Subscriber")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "h5",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.editmode,
+                        expression: "editmode"
+                      }
+                    ],
+                    staticClass: "modal-title",
+                    attrs: { id: "addNewLabel" }
+                  },
+                  [_vm._v("Update Subscriber")]
+                ),
+                _vm._v(" "),
+                _vm._m(2)
+              ]),
+              _vm._v(" "),
+              _c(
+                "form",
+                {
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      _vm.editmode
+                        ? _vm.updateSubscriber()
+                        : _vm.createSubscriber()
+                    }
+                  }
+                },
+                [
+                  _c("div", { staticClass: "modal-body" }, [
+                    _c(
+                      "div",
+                      { staticClass: "form-group" },
+                      [
+                        _c("label", [_vm._v("First Name")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.first_name,
+                              expression: "form.first_name"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.form.errors.has("first name")
+                          },
+                          attrs: { type: "text", name: "first_name" },
+                          domProps: { value: _vm.form.first_name },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.form,
+                                "first_name",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("has-error", {
+                          attrs: { form: _vm.form, field: "first name" }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "form-group" },
+                      [
+                        _c("label", [_vm._v("Last Name")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.last_name,
+                              expression: "form.last_name"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.form.errors.has("last name")
+                          },
+                          attrs: { type: "text", name: "last_name" },
+                          domProps: { value: _vm.form.last_name },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.form,
+                                "last_name",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("has-error", {
+                          attrs: { form: _vm.form, field: "last name" }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "form-group" },
+                      [
+                        _c("label", [_vm._v("Email")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.email,
+                              expression: "form.email"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: { "is-invalid": _vm.form.errors.has("email") },
+                          attrs: { type: "email", name: "email" },
+                          domProps: { value: _vm.form.email },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(_vm.form, "email", $event.target.value)
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("has-error", {
+                          attrs: { form: _vm.form, field: "email" }
+                        })
+                      ],
+                      1
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-footer" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-danger",
+                        attrs: { type: "button", "data-dismiss": "modal" }
+                      },
+                      [_vm._v("Close")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: _vm.editmode,
+                            expression: "editmode"
+                          }
+                        ],
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "submit" }
+                      },
+                      [_vm._v("Update")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: !_vm.editmode,
+                            expression: "!editmode"
+                          }
+                        ],
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "submit" }
+                      },
+                      [_vm._v("Create")]
+                    )
+                  ])
+                ]
+              )
+            ])
+          ]
+        )
+      ]
+    )
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      { staticClass: "btn btn-success", attrs: { type: "button" } },
-      [
-        _vm._v("\n              Add Subscriber\n              "),
-        _c("i", { staticClass: "fas fa-user-plus" })
-      ]
-    )
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -62413,15 +62791,26 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("td", [
-      _c("a", { attrs: { href: "#" } }, [
-        _c("i", { staticClass: "fa fa-edit" })
-      ]),
-      _vm._v("\n                  /\n                  "),
-      _c("a", { attrs: { href: "#" } }, [
-        _c("i", { staticClass: "fa fa-trash" })
-      ])
+    return _c("a", { attrs: { href: "#" } }, [
+      _c("i", { staticClass: "fa fa-trash" })
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close"
+        }
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
   }
 ]
 render._withStripped = true
