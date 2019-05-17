@@ -59,7 +59,16 @@ class MailSubscribersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $susbcriber = MailSubscribers::findorFail($id);
+
+        $this->validate($request,[
+            'first_name'=>'required|string|max:191',
+            'last_name'=>'required|string|max:191',
+            'email'=>'required|string|max:191|email|unique:users,email,'.$susbcriber->id,
+        ]);
+        $susbcriber->update($request->all());
+
+        return['message'=>'updated susbscriber info '];
     }
 
     /**
