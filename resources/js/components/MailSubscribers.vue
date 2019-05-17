@@ -38,7 +38,7 @@
                       <i class="fa fa-edit"></i>
                     </a>
                     /
-                    <a href="#">
+                    <a href="#" @click="deleteSubscriber(subscriber.id)" >
                       <i class="fa fa-trash"></i>
                     </a>
                   </td>
@@ -77,9 +77,9 @@
                   type="text"
                   name="first_name"
                   class="form-control"
-                  :class="{ 'is-invalid': form.errors.has('first name') }"
+                  :class="{ 'is-invalid': form.errors.has('first_name') }"
                 >
-                <has-error :form="form" field="first name"></has-error>
+                <has-error :form="form" field="first_name"></has-error>
               </div>
 
               <div class="form-group">
@@ -89,9 +89,9 @@
                   type="text"
                   name="last_name"
                   class="form-control"
-                  :class="{ 'is-invalid': form.errors.has('last name') }"
+                  :class="{ 'is-invalid': form.errors.has('last_name') }"
                 >
-                <has-error :form="form" field="last name"></has-error>
+                <has-error :form="form" field="last_name"></has-error>
               </div>
 
               <div class="form-group">
@@ -144,6 +144,34 @@ export default {
       this.form.reset();
       $("#addNewSubscriber").modal("show");
       this.form.fill(user);
+    },
+      deleteSubscriber(id) {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+      }).then(result => {
+        //send request to server
+        if(result.value){
+        this.form
+          .delete("api/mailSubscribers/" + id)
+          .then(() => {
+              Swal.fire("Deleted!", "subscriber has been deleted.", "success");
+              Fire.$emit("AfterChange");
+          })
+          .catch(() => {
+            this.$Progress.fail();
+            Swal.fire({
+              type: "error",
+              title: "Oops...",
+            });
+          });
+        }
+      });
     },
     createSubscriber() {
       this.$Progress.start();

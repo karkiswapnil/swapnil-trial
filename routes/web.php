@@ -32,7 +32,7 @@ Route::get('download-csv', function () {
 
 	$csvExporter = new \Laracsv\Export();
 
-	return $csvExporter->build($users, ['Id', 'Name', 'Email','Role','Created_at'])->download(time().'-'.'users.csv');
+	return $csvExporter->build($users, ['id', 'name', 'email','role','created_at'])->download(time().'-'.'users.csv');
 
 });
 
@@ -42,7 +42,7 @@ Route::get('download-csv-subscribers', function () {
 
 	$csvExporter = new \Laracsv\Export();
 
-	return $csvExporter->build($susbscribers, ['id', 'name', 'email','created_at'])->download(time().'-'.'subscribers.csv');
+	return $csvExporter->build($susbscribers, ['id', 'first_name','last_name','email','created_at'])->download(time().'-'.'subscribers.csv');
 
 });
 

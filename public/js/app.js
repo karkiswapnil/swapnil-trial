@@ -2015,8 +2015,36 @@ __webpack_require__.r(__webpack_exports__);
       $("#addNewSubscriber").modal("show");
       this.form.fill(user);
     },
-    createSubscriber: function createSubscriber() {
+    deleteSubscriber: function deleteSubscriber(id) {
       var _this = this;
+
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+      }).then(function (result) {
+        //send request to server
+        if (result.value) {
+          _this.form["delete"]("api/mailSubscribers/" + id).then(function () {
+            Swal.fire("Deleted!", "subscriber has been deleted.", "success");
+            Fire.$emit("AfterChange");
+          })["catch"](function () {
+            _this.$Progress.fail();
+
+            Swal.fire({
+              type: "error",
+              title: "Oops..."
+            });
+          });
+        }
+      });
+    },
+    createSubscriber: function createSubscriber() {
+      var _this2 = this;
 
       this.$Progress.start(); // Submit the form via a POST request
 
@@ -2032,13 +2060,13 @@ __webpack_require__.r(__webpack_exports__);
         });
         $("#addNewSubscriber").modal("hide");
 
-        _this.$Progress.finish();
+        _this2.$Progress.finish();
       })["catch"](function () {
-        _this.$Progress.fail();
+        _this2.$Progress.fail();
       });
     },
     updateSubscriber: function updateSubscriber() {
-      var _this2 = this;
+      var _this3 = this;
 
       // console.log('editing data')
       this.$Progress.start();
@@ -2054,27 +2082,27 @@ __webpack_require__.r(__webpack_exports__);
         });
         $("#addNewSubscriber").modal("hide");
       })["catch"](function () {
-        _this2.$Progress.fail();
+        _this3.$Progress.fail();
       });
     },
     downloadCsv: function downloadCsv() {
       window.location.href = "download-csv-subscribers";
     },
     loadUsers: function loadUsers() {
-      var _this3 = this;
+      var _this4 = this;
 
       axios.get("api/mailSubscribers").then(function (_ref) {
         var data = _ref.data;
-        return _this3.subscriber = data;
+        return _this4.subscriber = data;
       });
     }
   },
   created: function created() {
-    var _this4 = this;
+    var _this5 = this;
 
     this.loadUsers();
     Fire.$on("AfterChange", function () {
-      _this4.loadUsers();
+      _this5.loadUsers();
     });
   }
 });
@@ -62508,7 +62536,18 @@ var render = function() {
                           [_c("i", { staticClass: "fa fa-edit" })]
                         ),
                         _vm._v("\n                  /\n                  "),
-                        _vm._m(1, true)
+                        _c(
+                          "a",
+                          {
+                            attrs: { href: "#" },
+                            on: {
+                              click: function($event) {
+                                return _vm.deleteSubscriber(subscriber.id)
+                              }
+                            }
+                          },
+                          [_c("i", { staticClass: "fa fa-trash" })]
+                        )
                       ])
                     ])
                   })
@@ -62579,7 +62618,7 @@ var render = function() {
                   [_vm._v("Update Subscriber")]
                 ),
                 _vm._v(" "),
-                _vm._m(2)
+                _vm._m(1)
               ]),
               _vm._v(" "),
               _c(
@@ -62613,7 +62652,7 @@ var render = function() {
                           ],
                           staticClass: "form-control",
                           class: {
-                            "is-invalid": _vm.form.errors.has("first name")
+                            "is-invalid": _vm.form.errors.has("first_name")
                           },
                           attrs: { type: "text", name: "first_name" },
                           domProps: { value: _vm.form.first_name },
@@ -62632,7 +62671,7 @@ var render = function() {
                         }),
                         _vm._v(" "),
                         _c("has-error", {
-                          attrs: { form: _vm.form, field: "first name" }
+                          attrs: { form: _vm.form, field: "first_name" }
                         })
                       ],
                       1
@@ -62655,7 +62694,7 @@ var render = function() {
                           ],
                           staticClass: "form-control",
                           class: {
-                            "is-invalid": _vm.form.errors.has("last name")
+                            "is-invalid": _vm.form.errors.has("last_name")
                           },
                           attrs: { type: "text", name: "last_name" },
                           domProps: { value: _vm.form.last_name },
@@ -62674,7 +62713,7 @@ var render = function() {
                         }),
                         _vm._v(" "),
                         _c("has-error", {
-                          attrs: { form: _vm.form, field: "last name" }
+                          attrs: { form: _vm.form, field: "last_name" }
                         })
                       ],
                       1
@@ -62785,14 +62824,6 @@ var staticRenderFns = [
       _c("th", [_vm._v("Subscribed at")]),
       _vm._v(" "),
       _c("th", [_vm._v("Modify")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("a", { attrs: { href: "#" } }, [
-      _c("i", { staticClass: "fa fa-trash" })
     ])
   },
   function() {

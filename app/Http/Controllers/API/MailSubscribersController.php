@@ -79,6 +79,11 @@ class MailSubscribersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $susbcriber = MailSubscribers::findorFail($id);
+
+        //delete user
+        $susbcriber->delete();
+
+        return['message'=>'user deleted'];
     }
 }
