@@ -42,7 +42,7 @@ Route::get('download-csv-subscribers', function () {
 
 	$csvExporter = new \Laracsv\Export();
 
-	return $csvExporter->build($susbscribers, ['id', 'first_name','last_name','email','created_at'])->download(time().'-'.'subscribers.csv');
+	return $csvExporter->build($susbscribers, ['id' => 'Id', 'first_name' => 'First Name','last_name' => 'Last Name','email' => 'Email Address','created_at'])->download(time().'-'.'subscribers.csv');
 
 });
 
