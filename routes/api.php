@@ -25,6 +25,10 @@ Route::apiResources([
     'userPosts' => 'API\UserPostsController'
 ]);
 
+Route::apiResources([
+    'mailSubscribers' => 'API\MailSubscribersController'
+]);
+
 Route::get('profile','API\UserController@profile');
 Route::put('profile','API\UserController@updateProfile');
 

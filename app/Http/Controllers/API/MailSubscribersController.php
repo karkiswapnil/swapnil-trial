@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\MailSubscribers;
 
 class MailSubscribersController extends Controller
 {
@@ -14,7 +15,7 @@ class MailSubscribersController extends Controller
      */
     public function index()
     {
-        //
+        return MailSubscribers::latest()->paginate(10);
     }
 
     /**

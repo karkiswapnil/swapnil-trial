@@ -107,6 +107,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <p>User Posts</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="/mailSubscribers" class="nav-link">
+                  <i class="fas fa-mail-bulk"></i>
+                  <p>Mail Subscribers</p>
+                </a>
+              </li>
             </ul>
           </li>
           <li class="nav-item">

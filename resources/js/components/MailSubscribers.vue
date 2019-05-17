@@ -1,12 +1,20 @@
 <template>
   <div class="container">
     <div class="row justify-content-center">
-      <div class="col-md-8">
+      <div class="col-md-12">
         <div class="card">
           <div class="card-header">
             <h3 class="card-title">Mail Subscribers List</h3>
 
             <div class="card-tools">
+                <button
+                type="button"
+                class="btn btn-success"
+                @click="downloadCsv"
+              >
+                Download CSV
+                <i class="fas fa-file-csv"></i>
+              </button>
               <button type="button" class="btn btn-success">
                 Add Subscriber
                 <i class="fas fa-user-plus"></i>
@@ -21,14 +29,14 @@
                   <th>ID</th>
                   <th>Name</th>
                   <th>Email</th>
-                  <th>Created_At</th>
+                  <th>Subscribed at</th>
                   <th>Modify</th>
                 </tr>
-                <tr v-for="subcriber in subcriber.data" v-bind:key="subcriber.id">
-                  <td>{{subcriber.id}}</td>
-                  <td>{{subcriber.name}}</td>
-                  <td>{{subcriber.email}}</td>
-                  <td>{{subcriber.created_at | myDate}}</td>
+                <tr v-for="subscriber in subscriber.data" v-bind:key="subscriber.id">
+                  <td>{{subscriber.id}}</td>
+                  <td>{{subscriber.first_name}} {{subscriber.last_name}}</td>
+                  <td>{{subscriber.email}}</td>
+                  <td>{{subscriber.created_at | myDate}}</td>
                   <td>
                     <a href="#">
                       <i class="fa fa-edit"></i>
@@ -57,17 +65,22 @@ export default {
       subscriber: {},
       form: new Form({
         id: "",
-        name: "",
+        first_name: "",
+        last_name: "",
         email: ""
       })
     };
   },
   methods: {
+       downloadCsv(){
+      window.location.href = "download-csv-subscribers";
+    },
     loadUsers() {
-      axios.get("api/userPosts").then(({ data }) => (this.posts = data));
+      axios.get("api/mailSubscribers").then(({ data }) => (this.subscriber = data));
     }
   },
   mounted() {
+    this.loadUsers();
     console.log("Component mounted.");
   }
 };
