@@ -17,6 +17,7 @@
         "laravel/socialite": "^4.1",
         "laravel/tinker": "^1.0",
         "laravelcollective/html": "^5.4.0",
+        "spatie/laravel-newsletter": "^4.2",
         "usmanhalalit/laracsv": "^2.0"
     },
     "require-dev": {

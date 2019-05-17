@@ -56,6 +56,8 @@ Route::get('/compose', function () {
     return view('emails.compose');
 });
 
+Route::get('sendNotification', 'HomeController@sendNotification');
+
 /*
 |keep at last of all routes
 |404 error when refresh on vue routes 

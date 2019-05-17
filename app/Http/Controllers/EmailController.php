@@ -31,7 +31,7 @@ class EmailController extends Controller
         $listId = env('MAILCHIMP_LIST_ID');
 
         //Mailchimp instantiation with Key
-        $mailchimp = new \Mailchimp(env('MAILCHIMP_KEY'));
+        $mailchimp = new \Mailchimp(env('MAILCHIMP_APIKEY'));
 
         //Create a Campaign $mailchimp->campaigns->create($type, $options, $content)
         $campaign = $mailchimp->campaigns->create('regular', [
