@@ -8,7 +8,6 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use App\Events\NewSubscriberEvent;
-use App\Listeners\NewSubscriberListener;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -19,7 +18,9 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         NewSubscriberEvent::class=>[
-            NewSubscriberListener::class,
+            \App\Listeners\NewSubscriberListener::class,
+            \App\Listeners\RegisterSubscriberToNewsletter::class,
+            \App\Listeners\NotifyAdminViaSlack::class,
         ],
     ];
 
