@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Mail;
 
 use App\Mail\NewSubscriberMail;
 
-class NewSubscriberListener
+class NewSubscriberListener implements ShouldQueue
 {
     /**
      * Create the event listener.
@@ -28,6 +28,9 @@ class NewSubscriberListener
      */
     public function handle($event)
     {
+
+        sleep(10);
+
         Mail::to($event->subscriber->email)->send(new NewSubscriberMail($event->subscriber));
     }
 }
