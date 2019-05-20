@@ -6,7 +6,7 @@
 <body>
 
  <h1>Subject   </h1>
- <p>Message</p>  
+ <p>Welcome {{ $subscriber->first_name }} {{ $subscriber->last_name }}</p>  
  
 
 </body>

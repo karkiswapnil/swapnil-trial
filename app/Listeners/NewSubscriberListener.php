@@ -28,6 +28,6 @@ class NewSubscriberListener
      */
     public function handle($event)
     {
-        Mail::to($event->subscriber->email)->send(new NewSubscriberMail());
+        Mail::to($event->subscriber->email)->send(new NewSubscriberMail($event->subscriber));
     }
 }
