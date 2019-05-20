@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\MailSubscribers;
 
+use App\Events\NewSubscriberEvent;
 use App\Notifications\NewUser;
 
 class MailSubscribersController extends Controller
@@ -34,15 +35,17 @@ class MailSubscribersController extends Controller
             'email'=>'required|string|max:191|email|unique:mail_subscribers',
           
         ]);
-        $susbcriber = MailSubscribers:: create([
+        $subscriber = MailSubscribers:: create([
             'first_name'=>$request['first_name'],
             'last_name'=>$request['last_name'],
             'email'=>$request['email']
         ]);
 
-        $susbcriber->notify(new NewUser($susbcriber));
+        event(new NewSubscriberEvent($subscriber));
 
-        return $susbcriber;
+        //$subscriber->notify(new NewUser($subscriber));
+
+        return $subscriber;
     }
 
     /**
